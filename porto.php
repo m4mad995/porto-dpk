@@ -1,0 +1,1292 @@
+<script>
+function kirimPesan(event) {
+    event.preventDefault(); // Hindari reload halaman
+
+    const nama = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const pesan = document.getElementById('masage').value;
+
+    // Kirim ke database dulu
+    fetch('porto.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: `name=${encodeURIComponent(nama)}&email=${encodeURIComponent(email)}&masage=${encodeURIComponent(pesan)}`
+    })
+    .then(res => res.text())
+    .then(data => {
+        document.getElementById('notifikasi').textContent = "✅ Pesan berhasil dikirim ke database & WhatsApp!";
+        // Reset form
+        document.getElementById('name').value = "";
+        document.getElementById('email').value = "";
+        document.getElementById('masage').value = "";
+
+        // Setelah berhasil, kirim ke WhatsApp juga
+        const url = "https://api.whatsapp.com/send?phone=62881036969830&text=" +
+            `Halo Hamdani,%0ASaya *${encodeURIComponent(nama)}*%0AEmail: *${encodeURIComponent(email)}*%0A%0A*${encodeURIComponent(pesan)}*`;
+
+        window.open(url, '_blank');
+    })
+    .catch(error => {
+        document.getElementById('notifikasi').textContent = "❌ Gagal mengirim pesan.";
+        console.error(error);
+    });
+}
+</script>
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACHMAD HAMDANI HILMAN</title>
+    <link rel="stylesheet" href="">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
+    href= "https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" 
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+    --primaryTextColor: #232635;
+    --secondaryTextColor: #656d72;
+    --borderColor: #B0C4DE;
+    box-shadow: ;
+    --lineColor: #d9d9d9;
+    --primaryBackgroundColor: #fff;
+    --secondaryBackgroundColor: #fbfbfb;
+    --thirdBackgroundColor: #f5f3fe;
+    --primaryiconcolor: blueviolet;
+    --primaryiconcolorhover: rgb(153, 71, 231);
+    --sectionPadding: 4rem 0;
+    --itemBorderRadius: 0.7rem
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+* {
+    scroll-behavior: smooth;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+strong {
+    color: black;
+}
+
+p {
+    font-size: 1rem;
+    line-height: 1.9rem;
+}
+
+p,
+span,
+label,
+input,
+textarea,
+li {
+    color: rgb(113, 110, 110);
+}
+
+a {
+    text-decoration: none;
+}
+
+section {
+    padding: 40px 20px;
+    margin-bottom: 80px;
+}
+
+
+.utama {
+    width: 1200px;
+    margin: auto;
+    background-color: #d9d9d9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    width: 100%;
+}
+
+@media (max-width: 1200px) {
+    .utama {
+        width: 90%;
+    }
+}
+
+/* pre title */
+.pre-title {
+    text-transform: uppercase;
+    letter-spacing: 0.5rem;
+    color: rgb(113, 110, 110);
+    position: relative;
+    padding-left: 40px;
+    width: fit-content;
+    font-weight: 400;
+    font-size: 0.9rem;
+}
+
+.pre-title::before {
+    content: "";
+    width: 30px;
+    height: 1px;
+    background: rgb(65, 63, 63);
+    position: absolute;
+    display: block;
+    left: 0;
+    top: 50%;
+}
+
+/* laoyout */
+.grid3 {
+    display: grid;
+    margin: 10px;
+    grid-template-columns: repeat(3, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: -20px;
+    grid-auto-rows: minmax(100px, auto);
+    justify-items: center;
+}
+
+
+/*nav menu dan logo*/
+.utama {
+    background-color: #d9d9d9;
+    box-shadow: 0 4px 12px rgba(106, 90, 249, 0.4);
+    /* Shadow navbar - bisa diganti warna dan intensitas */
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    width: 100%;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 20px;
+    /* Tambahkan padding yang lebih baik */
+    margin: 0px;
+    cursor: pointer;
+    transition: .2s ease-in-out;
+    animation: fadeInDown 0.8s ease-out;
+    max-width: 1200px;
+    /* Atur max-width sesuai kebutuhan */
+    margin: 0 auto;
+    /* Center the nav content */
+}
+
+.nav ul {
+    display: flex;
+    list-style: none;
+    gap: 3.1rem;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: flex;
+    align-items: center;
+}
+
+nav ul li a {
+    font-size: 1rem;
+    font-weight: 600;
+    color: black;
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+    position: relative;
+    /* Tambahkan ini untuk positioning pseudo-element */
+}
+
+/* Garis bawah untuk menu navbar biasa (bukan resume button) */
+nav ul li:not(.resume-btn) a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 3px;
+    /* Ketebalan garis */
+    background: linear-gradient(45deg, #6a5af9, #00d0ff);
+    /* Warna garis - bisa diganti */
+    border-radius: 2px;
+    /* Sudut melengkung */
+    transition: width 0.3s ease;
+}
+
+nav ul li:not(.resume-btn) a:hover::after {
+    width: 100%;
+}
+
+nav ul li a:hover {
+    color: var(--primaryiconcolorhover);
+    transform: scale(1.05);
+    /* Dikurangi dari 1.5 agar tidak terlalu besar */
+}
+
+.resume-btn a {
+    position: relative;
+    display: inline-block;
+    background: linear-gradient(100deg, #6a5af9, #00d0ff);
+    color: #fff !important;
+    font-weight: 700;
+    border: none;
+    border-radius: 50px;
+    padding: 0.6rem 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1.1px;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(106, 90, 249, 0.6);
+    transition: all 0.4s ease;
+    overflow: hidden;
+    z-index: 0;
+}
+
+.resume-btn a::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -25%;
+    width: 150%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: all 0.6s ease;
+    opacity: 0;
+    z-index: -1;
+}
+
+.resume-btn a:hover::before {
+    top: -10%;
+    left: 75%;
+    opacity: 1;
+    transition: all 0.6s ease;
+}
+
+.resume-btn a:hover {
+    box-shadow: 0 8px 25px #00d0ff;
+    transform: scale(1.05);
+    color: white !important;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 2.7rem;
+    font-weight: 700;
+}
+
+.logo a {
+    color: black;
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.logo a:hover {
+    color: var(--primaryiconcolor);
+}
+
+#hero {
+    height: 100px;
+    margin-bottom: 100rem;
+    margin-top: 1.4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    text-align: center;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.nama {
+    font-size: 2.7rem;
+    font-weight: 700;
+    margin: 0.5rem 0 1rem;
+}
+
+.nama span {
+    color: rgb(16, 152, 189);
+}
+
+.herokanan img {
+    width: 58%;
+}
+
+.herokanan {
+    display: flex;
+    justify-content: center;
+    animation: slideInLeft 1s ease-out;
+
+}
+
+.herokiri {
+    animation: slideInLeft 1s ease-out;
+}
+
+.herokiri p {
+    margin-left: 1rem;
+}
+
+.herokiri p,
+.nama {
+    margin-top: 1.9rem;
+}
+
+.herokiri .pre-title {
+    text-align: center;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#about {
+    height: 20rem;
+    min-height: 80vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    background-color: var(--secondaryBackgroundColor);
+    padding: var(--sectionPadding);
+    margin-top: 30rem;
+}
+
+.aboutkiri img {
+    height: 20rem;
+    width: 20rem;
+    margin-left: 12rem;
+    border-radius: 50%;
+    border: 5.4px solid;
+}
+
+.aboukiri {
+    display: flex;
+    justify-content: center;
+    margin-top: 9rem;
+    transform: translateX(-50px);
+    transition: all 0.8s ease-out;
+}
+
+#border {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    border: 3px solid #e0e0e0;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    object-fit: cover;
+    cursor: pointer;
+    position: relative;
+}
+
+#border:hover {
+    transform: translateY(-10px) scale(1.05);
+    border: 3px solid #667eea;
+    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+}
+
+/* Alternatif border gradient yang lebih modern */
+.gradient-border {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    padding: 3px;
+    background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.gradient-border img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: none;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.gradient-border:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.4);
+}
+
+.gradient-border:hover img {
+    transform: scale(0.98);
+}
+
+.aboutkanan .pre-title {
+    text-align: center;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.nama {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    text-align: center;
+    margin-right: auto;
+}
+
+.aboutkanan {
+    /* padding-left: 2rem; */
+    padding-right: 5rem;
+    text-align: center;
+    margin-right: 4rem;
+    transform: translateX(50px);
+    transition: all 0.8s ease-out;
+}
+
+/* BAGIAN PROYEK */
+#projek {
+    padding: var(--sectionPadding);
+}
+
+.judul-projek span {
+    color: rgb(16, 152, 189);
+}
+
+.proyek {
+    border-radius: var(--itemBorderRadius);
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    border: 1px solid var(--borderColor);
+    transform: translateY(30px);
+    transition: all 0.5s ease-out;
+}
+
+.proyek:hover {
+    transform: translateY(20px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.apro {
+    margin-bottom: 3rem;
+    margin-left: 50px;
+}
+
+.apro .pre-title .judul-projek {
+    padding-left: 2rem;
+    margin-left: 2rem;
+}
+
+.kover1 {
+    height: 250px;
+
+}
+
+.kover1 img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+
+}
+
+.pinfo {
+    padding: 2rem 1.5rem;
+}
+
+.pjudul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.proyek h4 {
+    font-weight: 500;
+    font-size: 1.05rem;
+}
+
+.pjudul a svg:hover {
+    fill: blueviolet;
+}
+
+.pjudul a {
+    transition: .2s ease-in-out;
+}
+
+.ptag {
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.ptag div {
+    font-size: .9rem;
+    border: 1px solid var(--borderColor);
+    padding: .4rem 1 rem;
+    color: var(--secondaryTextColor);
+}
+
+.edu {
+    padding: var(--sectionPadding);
+    background: var(--secondaryBackgroundColor);
+}
+
+.skill-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 3rem;
+}
+
+.skg {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: center;
+    padding: 2rem 0;
+}
+
+.skg img {
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.skg img:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.skillkanan {
+    flex: 1;
+    background-color: #f8f9fa;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.skilkiri {
+    flex: 1;
+    background: #fff;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.skg img {
+    width: 460px;
+    height: 325px;
+    padding-right: 20px;
+}
+
+#edu {
+    margin-top: 10vh;
+}
+
+.edu-judul span {
+    color: rgb(16, 152, 189);
+    margin-right: 4px;
+}
+
+.edu {
+    display: flex;
+    gap: 2rem;
+}
+
+.ejud {
+    margin-left: 50px;
+}
+
+.edu .line {
+    padding: 0 .7rem;
+}
+
+.edu .line div {
+    width: 2px;
+    width: 100%;
+    background: var(--borderColor);
+    position: relative;
+}
+
+.edu-info {
+    transform: translateY(30px);
+    transition: all 0.5s ease-out;
+    margin-left: 50px;
+}
+
+.edu-info p {
+    margin: .6rem 0 1..4rem;
+}
+
+.tahun {
+    margin-bottom: 3rem;
+}
+
+
+/* titik garis */
+.edu .line div::before {
+    content: "";
+    width: 15px;
+    height: 15px;
+    background: var(--borderColor);
+    border-radius: 50%;
+    position: absolute;
+    left: -6px;
+}
+
+#contact {
+    padding: var(--sectionPadding);
+    background-color: #fff;
+    width: 80% !important;
+    max-width: none !important;
+    border-radius: 12px;
+    box-sizing: border-box;
+    height: auto;
+    margin: 0 auto !important;
+    position: relative !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+}
+
+.contact-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    min-height: 60vh;
+    box-sizing: border-box;
+}
+
+.contact-left {
+    background: var(--cardBackground);
+    border: 2px solid var(--borderColor);
+    border-radius: 16px;
+    padding: 2.5rem 3rem;
+    box-shadow: 0 12px 24px var(--cardShadow);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: box-shadow 0.3s ease;
+    width: 100%;
+    max-width: none;
+}
+
+.contact-left:hover {
+    box-shadow: 0 18px 36px rgba(0, 123, 255, 0.25);
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+
+.contact-form div {
+    position: relative;
+    margin-bottom: 1.4rem;
+    width: 100%;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 0.75rem 1.3rem;
+    font-family: "Roboto", sans-serif;
+    background: var(--secondaryBackgroundColor);
+    border: 1px solid var(--borderColor);
+    border-radius: 8px;
+    transition: border 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    font-size: 1rem;
+    resize: none;
+    box-sizing: border-box;
+    display: block;
+    margin: 0 auto;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+    color: #9d9fa1;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border: 1.8px solid #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+}
+
+.social-icons-container {
+    margin-top: 48rem;
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.social-icon {
+    position: relative;
+    display: flex;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.social-icon::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transform: rotate(45deg);
+    animation: shimmer 2s infinite;
+    transition: animation-play-state 0.3s ease;
+}
+
+.social-icon:hover::before {
+    animation-play-state: paused;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+
+    50% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+    }
+
+    100% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+}
+
+.social-icon svg {
+    width: 30px;
+    height: 30px;
+    fill: white;
+    z-index: 1;
+    transition: transform 0.3s ease;
+}
+
+.social-icon:hover svg {
+    transform: scale(1.2);
+}
+
+.social-icon:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.instagram {
+    background: linear-gradient(45deg, #001aff 0%, #00f2fe 50%, #ffffff 100%);
+    right: 40rem;
+    top: 5rem;
+}
+
+.tiktok {
+    background: linear-gradient(45deg, #001aff 0%, #00f2fe 50%, #ffffff 100%);
+    right: 37rem;
+    top: 5rem;
+}
+
+.github {
+    background: linear-gradient(45deg,  #001aff 0%, #00f2fe 50%, #ffffff 100%);
+    right: 25.8rem;
+    top: 4.9rem;
+}
+
+.email {
+    background: linear-gradient(45deg,  #001aff 0%, #00f2fe 50%, #ffffff 100%);
+    right: 23.9rem;
+}
+
+
+.btn-submit {
+    position: relative;
+    display: inline-block;
+    background: linear-gradient(100deg, #6a5af9, #00d0ff);
+    color: #fff !important;
+    font-weight: 700;
+    border: none;
+    border-radius: 50px;
+    padding: 0.6rem 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1.1px;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(106, 90, 249, 0.6);
+    transition: all 0.4s ease;
+    overflow: hidden;
+    z-index: 1;
+    /* Ubah dari 0 ke 1 */
+    font-family: inherit;
+}
+
+.btn-submit::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -25%;
+    width: 150%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: all 0.6s ease;
+    opacity: 0;
+    z-index: -1;
+}
+
+.btn-submit:hover::before {
+    top: -10%;
+    left: 75%;
+    opacity: 1;
+    transition: all 0.6s ease;
+    /* Tambahkan transition di hover juga */
+}
+
+.btn-submit:hover {
+    box-shadow: 0 8px 25px #00d0ff;
+    transform: scale(1.05);
+    color: white !important;
+}
+
+
+@media (max-width: 768px) {
+    #contact {
+        width: 95%;
+        /* Use more space on mobile */
+    }
+
+    .contact-left {
+        padding: 2rem;
+    }
+}
+
+footer {
+    background-color: var(--secondaryBackgroundColor);
+    text-align: center;
+    padding: 1rem 0;
+}
+    </style>
+    <header>
+        <div class="utama" data-aos="zoom-in-right">
+            <div class="nav">
+                <div class="logo">
+                    <a href="">HA</a>
+                </div>
+    
+                <nav class="nav-link">
+                    <ul>
+                        <li><a href="#home">HOME</a></li>
+                        <li><a href="#about">ABOUT</a></li>
+                        <li><a href="#edu">SKILL</a></li>
+                        <li><a href="#projek">PROJECT</a></li>
+                        <li><a href="#contact">CONTACT</a></li>
+                        <li class="resume-btn"><a href="pdf-cv.pdf" target="_blank">Resume</a></li>
+                    </ul>
+                </nav>
+             </div>
+        </div>
+    </header>
+
+    <section id="hero">
+        <div class="herokiri" data-aos="zoom-out-right">
+            <h4 class="pre-title">Hello my name is</h4>
+            <h1 class="nama">ACHMAD HAM<span>DANI HILMAN</span></h1>
+            <p>
+                SELAMAT DATANG di portofolio saya! saya seorang pelajar yang <br>berusaha
+                mencapai kesuksesan dalam bidang software engineer. <br> 
+                Mari lihat beberapa yang bisa saya tawarkan!
+            </p>
+        </div>
+
+        <div class="herokanan" data-aos="zoom-out-right"> 
+            <img src="sapiens.png" alt="berdiri">
+        </div>
+    </section>
+    
+    <section id="about">
+        <div class="aboutkiri">
+            <img src="aku3.jpg" alt="aku" id="border">
+        </div>
+
+        <div class="aboutkanan">
+            <h4 class="pre-title">ABOUT ME</h4>
+            <h1 class="nama">HI, IAM <span>HAMDANI</span></h1>
+            <p>
+                Saya Achmad Hamdani Hilman, seorang pelajar dari SMK NEGERI 1 Surabaya <br>dari jurusan Rekayasa Perangkat Lunak. 
+                Saya lahir dan dibesarkan di Surabaya, <br>tepatnya pada 6 Juli 2008. Saat ini saya sedang mendalami bidang website developer.
+            </p>
+        </div>
+    </section>
+
+    <section  id="edu">
+        <div class="edutama">
+            <div class="ejud">
+                <h4 class="pre-title">Learning Path</h4>
+                <h1 class="edu-judul">Skills and <span>Education</span></h1>
+            </div>
+            <div class="skill-grid">
+                <div class="skilkiri" data-aos="zoom-out-right">
+                    <div class="edu">
+                        <div class="edu-info">
+                            <h4 class="udu-judul">SMK NEGERI 1 Surabaya</h4>
+                            <p>Konsenterasi Keahlian : Rekayasa Perangkat Lunak</p>
+                            <h4 class="tahun">2024-until now</h4>
+                            <p class="pe">saya menempuh pendidikan di SMKN 1 Surabaya hingga sekarang. sejauh ini saya memiliki <br>
+                            beberapa pencapaian dan mengambil kursus untuk meningkatkan kemampuan saya. <br>
+                            Sejauh ini saya telah mempelajari beberapa bahasa dan data base seperti : </p>
+                            <ul>
+                                <li>C++</li>
+                                <li>HTML</li>
+                                <li>CSS</li>
+                            </ul>
+
+                            <ul>
+                                <li>Java Script</li>
+                                <li>PHP</li>
+                                <li>MY SQL</li>
+                            </ul>
+
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="skillkanan">
+                    <h4 class="sertif">Awards and sertificate</h4>
+                    <div class="skg">
+                        <a href="/kursus1.pdf"><img src="Screenshot (21).png" alt=""></a>
+                        <a href="/ACHMAD HAMDANI HILMAN-kursus2.pdf"><img src="Screenshot (20).png" alt=""></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <section id="projek">
+        <div class="work-utama">
+            <div class="apro">
+                <h4 class="pre-title">MY PROJECT</h4>
+                <h1 class="judul-projek">PROJECT I'VE <span>COMPLETED</span></h1>
+            </div>
+
+            <div class="grid3">
+                <!-- proyek 1 -->
+                <div class="proyek">
+                    <div class="kover1">
+                        <img src="kalkulator (2).png" alt="p1">
+                    </div>
+
+                    <div class="pinfo">
+                        <div class="pjudul">
+                            <h4>Kalkulator Sederhana</h4>
+                            <a href="/kalkulator sederhana.cpp">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M5 7c2.761 0 5 2.239 5 5s-2.239 5-5 5c-2.762 0-5-2.239-5-5s2.238-5 5-5zm15-4c0-1.657-1.344-3-3-3-1.657 0-3 1.343-3 3 0 .312.061.606.148.888l-4.209 3.157c.473.471.877 1.009 1.201 1.599l4.197-3.148c.477.317 1.048.504 1.663.504 1.656 0 3-1.343 3-3zm-5.852 17.112c-.087.282-.148.576-.148.888 0 1.657 1.343 3 3 3 1.656 0 3-1.343 3-3s-1.344-3-3-3c-.615 0-1.186.187-1.662.504l-4.197-3.148c-.324.59-.729 1.128-1.201 1.599l4.208 3.157zm6.852-5.05c1.656 0 3-1.343 3-3s-1.344-3-3-3c-1.281 0-2.367.807-2.797 1.938h-6.283c.047.328.08.66.08 1s-.033.672-.08 1h6.244c.395 1.195 1.508 2.062 2.836 2.062z"/></svg>
+                            </a>
+                        </div>
+
+                        <div class="ptag">
+                            <div>C++</div>
+                            <div>Dev C++</div>
+                        </div>
+
+                        <p>
+                            kalkulator sederhana yang hanya melakukan perhitungan sederhana, yakni <br>
+                            penjumlahan, pengurangan, perkalian, pembagian dengan dua angka
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- proyek 2 -->
+                <div class="proyek">
+                    <div class="kover1">
+                        <img src="scracth.png" alt="p2">
+                    </div>
+
+                    <div class="pinfo">
+                        <div class="pjudul">
+                            <h4>Game Teka-teki</h4>
+                            <a href="/absen 5 _ absen 9 _ absen 12 _ absen 32. game kuis suka suka .sb3"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M5 7c2.761 0 5 2.239 5 5s-2.239 5-5 5c-2.762 0-5-2.239-5-5s2.238-5 5-5zm15-4c0-1.657-1.344-3-3-3-1.657 0-3 1.343-3 3 0 .312.061.606.148.888l-4.209 3.157c.473.471.877 1.009 1.201 1.599l4.197-3.148c.477.317 1.048.504 1.663.504 1.656 0 3-1.343 3-3zm-5.852 17.112c-.087.282-.148.576-.148.888 0 1.657 1.343 3 3 3 1.656 0 3-1.343 3-3s-1.344-3-3-3c-.615 0-1.186.187-1.662.504l-4.197-3.148c-.324.59-.729 1.128-1.201 1.599l4.208 3.157zm6.852-5.05c1.656 0 3-1.343 3-3s-1.344-3-3-3c-1.281 0-2.367.807-2.797 1.938h-6.283c.047.328.08.66.08 1s-.033.672-.08 1h6.244c.395 1.195 1.508 2.062 2.836 2.062z"/></svg></a>
+                        </div>
+
+                        <div class="ptag">
+                            <div>Scratch</div>
+                        </div>
+
+                        <p>
+                            Game Teka-teki sederhana yang memiliki beberapa soal dengan pilihan jawaban, yang aku kerjakan dengan tim.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- proyek 3 -->
+                <div class="proyek">
+                    <div class="kover1">
+                        <img src="inputform.png" alt="p3">
+                    </div>
+
+                    <div class="pinfo">
+                        <div class="pjudul">
+                            <h4>Form Input Basic</h4>
+                            <a href="/kursus/testing.html"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M5 7c2.761 0 5 2.239 5 5s-2.239 5-5 5c-2.762 0-5-2.239-5-5s2.238-5 5-5zm15-4c0-1.657-1.344-3-3-3-1.657 0-3 1.343-3 3 0 .312.061.606.148.888l-4.209 3.157c.473.471.877 1.009 1.201 1.599l4.197-3.148c.477.317 1.048.504 1.663.504 1.656 0 3-1.343 3-3zm-5.852 17.112c-.087.282-.148.576-.148.888 0 1.657 1.343 3 3 3 1.656 0 3-1.343 3-3s-1.344-3-3-3c-.615 0-1.186.187-1.662.504l-4.197-3.148c-.324.59-.729 1.128-1.201 1.599l4.208 3.157zm6.852-5.05c1.656 0 3-1.343 3-3s-1.344-3-3-3c-1.281 0-2.367.807-2.797 1.938h-6.283c.047.328.08.66.08 1s-.033.672-.08 1h6.244c.395 1.195 1.508 2.062 2.836 2.062z"/></svg></a>
+                        </div>
+
+                        <div class="ptag">
+                            <div>HTML</div>
+                            <div>CSS</div>
+                            <div>Java Script</div>
+                        </div>
+
+                        <p>
+                            Sebuah form input sederhana untuk belajar membuat form input dengan menggunakan MTML, CSS, JAVA SCRIPT 
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="contact-main">
+            <div class="contact-left">
+                <form class="contact-form" action="" method="post" onsubmit="kirimPesan(event)">
+                    <div id="notifikasi" style="margin-top: 15px; font-weight: bold;"></div>
+                    <div>
+                        <input type="text" placeholder="nama" name="name" id="name" required>
+                    </div>
+                    <div>
+                        <input type="email" placeholder="email" name="email" id="email" required> 
+                    </div>
+                    <div>
+                        <textarea  placeholder="Pesan"  name="masage" id="masage"  cols="30" rows="10" required></textarea>
+                    </div>
+                    <div>
+                        <button class="btn-submit" type="submit">KIRIM PESAN</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="contact-right">
+                <div class="social-icons-container">
+                    <a href="https://www.instagram.com/hamdani19_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="social-icon instagram">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                    </a>
+                    
+                    <a href="https://www.tiktok.com/@hilman230?is_from_webapp=1&sender_device=pc" target="_blank" class="social-icon tiktok">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+                        </svg>
+                    </a>
+                    
+                    <a href="https://github.com/hamdani19" target="_blank" class="social-icon github">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </a>
+                    
+                    <a href="mailto:hamdaniachmad480@gmail.com" target="_blank" class="social-icon email">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h3.819l6.545 4.91 6.545-4.91h3.819A1.636 1.636 0 0 1 24 5.457z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+    </section>
+    <footer>
+        <p>&copy; 2025 - Made by Hamdani</p>
+    </footer>
+
+    <script>
+    
+function kirimPesan(event) {
+    event.preventDefault(); // Hindari reload halaman
+
+    const nama = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const pesan = document.getElementById('masage').value;
+
+    fetch('porto.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: `name=${encodeURIComponent(nama)}&email=${encodeURIComponent(email)}&masage=${encodeURIComponent(pesan)}`
+    })
+    .then(res => res.text())
+    .then(data => {
+        document.getElementById('notifikasi').textContent = "✅ Pesan berhasil dikirim!";
+        document.getElementById('name').value = "";
+        document.getElementById('email').value = "";
+        document.getElementById('masage').value = "";
+    })
+    .catch(error => {
+        document.getElementById('notifikasi').textContent = "❌ Gagal mengirim pesan.";
+        console.error(error);
+    });
+}
+
+// Intersection Observer for scroll animations
+const observerOptions = {
+    threshold: 0.8
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('animate');
+        }
+    });
+}, observerOptions);
+
+// Initialize animations when DOM is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // About Section Animation
+    const aboutLeft = document.querySelector('.aboutkiri');
+    const aboutRight = document.querySelector('.aboutkanan');
+    
+    if (aboutLeft && aboutRight) {
+        observer.observe(aboutLeft);
+        observer.observe(aboutRight);
+    }
+
+    // Project Cards Animation
+    const projects = document.querySelectorAll('.proyek');
+    projects.forEach((project, index) => {
+        project.style.transitionDelay = `${index * 0.2}s`;
+        observer.observe(project);
+    });
+
+    // Education Section Animation
+    const eduInfo = document.querySelector('.edu-info');
+    if (eduInfo) {
+        observer.observe(eduInfo);
+    }
+
+    // Contact Form Animation
+    const contactForm = document.querySelector('.contact-form');
+    if (contactForm) {
+        observer.observe(contactForm);
+        
+        // Add staggered delay to form elements
+        const formElements = contactForm.querySelectorAll('div');
+        formElements.forEach((element, index) => {
+            element.style.transitionDelay = `${index * 0.1}s`;
+        });
+    }
+});
+
+// Smooth scroll for navigation links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    });
+});
+
+// Add hover effect for project cards
+document.querySelectorAll('.proyek').forEach(project => {
+    project.addEventListener('mouseenter', () => {
+        project.style.transform = 'translateY(-10px)';
+        project.style.transition = 'transform 0.3s ease';
+    });
+
+    project.addEventListener('mouseleave', () => {
+        project.style.transform = 'translateY(0)';
+    });
+});
+
+Aos.init();
+
+    </script>
+    <script  src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+</body>
+</html>
